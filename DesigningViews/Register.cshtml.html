@@ -1,0 +1,76 @@
+@model BlogApp.DTOs.RegisterDto
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-user-plus"></i> @ViewData["Title"]
+                </h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Username" class="control-label">
+                                    <i class="fas fa-user"></i> Имя пользователя
+                                </label>
+                                <input asp-for="Username" class="form-control" placeholder="Введите имя пользователя" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label">
+                                    <i class="fas fa-envelope"></i> Email
+                                </label>
+                                <input asp-for="Email" class="form-control" placeholder="Введите ваш email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Password" class="control-label">
+                                    <i class="fas fa-lock"></i> Пароль
+                                </label>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Введите пароль" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ConfirmPassword" class="control-label">
+                                    <i class="fas fa-lock"></i> Подтверждение пароля
+                                </label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Повторите пароль" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block">
+                            <i class="fas fa-user-plus"></i> Зарегистрироваться
+                        </button>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p>Уже есть аккаунт? 
+                            <a asp-action="Login" asp-controller="Auth">Войдите в систему</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

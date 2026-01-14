@@ -1,0 +1,138 @@
+@model IEnumerable<BlogApp.Models.Post>
+
+@{
+    ViewData["Title"] = "Все статьи";
+}
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>
+            <i class="fas fa-newspaper text-primary"></i> @ViewData["Title"]
+        </h1>
+    </div>
+    <div class="col-md-4 text-right">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a href="@Url.Action("Create", "Posts")" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Новая статья
+            </a>
+        }
+    </div>
+</div>
+
+<!-- Поиск и фильтрация -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" action="@Url.Action("Index", "Posts")" class="form-inline">
+            <div class="form-group mr-2 mb-2">
+                <input type="text" name="search" class="form-control" placeholder="Поиск статей..." 
+                       value="@ViewBag.SearchTerm">
+            </div>
+            <button type="submit" class="btn btn-outline-primary mb-2">
+                <i class="fas fa-search"></i> Найти
+            </button>
+            <a href="@Url.Action("Index", "Posts")" class="btn btn-outline-secondary mb-2 ml-2">
+                <i class="fas fa-redo"></i> Сброс
+            </a>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <h5><i class="fas fa-info-circle"></i> Статьи не найдены</h5>
+        <p>Пока нет ни одной опубликованной статьи. Будьте первым!</p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a href="@Url.Action("Create", "Posts")" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Создать первую статью
+            </a>
+        }
+    </div>
+}
+else
+{
+    foreach (var post in Model)
+    {
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h4 class="card-title">
+                            <a href="@Url.Action("Details", "Posts", new { id = post.Id })" 
+                               class="text-dark">@post.Title</a>
+                        </h4>
+                        <p class="card-text text-muted">
+                            <small>
+                                <i class="far fa-calendar"></i> @post.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+                                <i class="far fa-user ml-2"></i> @post.Author?.Username
+                                <i class="far fa-comment ml-2"></i> @post.Comments?.Count комментариев
+                            </small>
+                        </p>
+                        <p class="card-text">
+                            @(post.Content.Length > 300 ? post.Content.Substring(0, 300) + "..." : post.Content)
+                        </p>
+                        <div class="mb-3">
+                            @if (post.PostTags != null)
+                            {
+                                foreach (var postTag in post.PostTags)
+                                {
+                                    <a href="@Url.Action("ByTag", "Posts", new { tagId = postTag.Tag.Id })" 
+                                       class="badge badge-primary mr-1">
+                                        <i class="fas fa-tag"></i> @postTag.Tag.Name
+                                    </a>
+                                }
+                            }
+                        </div>
+                        <a href="@Url.Action("Details", "Posts", new { id = post.Id })" 
+                           class="btn btn-outline-primary">
+                            <i class="fas fa-eye"></i> Читать далее
+                        </a>
+                    </div>
+                    
+                    @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || 
+                        (User.Identity.IsAuthenticated && post.Author?.Username == User.Identity.Name))
+                    {
+                        <div class="col-md-2 text-right">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" 
+                                        type="button" id="dropdownMenuButton" 
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" 
+                                       href="@Url.Action("Edit", "Posts", new { id = post.Id })">
+                                        <i class="fas fa-edit"></i> Редактировать
+                                    </a>
+                                    <a class="dropdown-item text-danger delete-confirm" 
+                                       href="@Url.Action("Delete", "Posts", new { id = post.Id })">
+                                        <i class="fas fa-trash"></i> Удалить
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    
+    <!-- Пагинация -->
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav aria-label="Навигация по страницам">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = i, search = ViewBag.SearchTerm })">
+                            @i
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+}

@@ -1,0 +1,55 @@
+@model BlogApp.DTOs.LoginDto
+
+@{
+    ViewData["Title"] = "Вход в систему";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-sign-in-alt"></i> @ViewData["Title"]
+                </h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input asp-for="Email" class="form-control" placeholder="Введите ваш email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label">
+                            <i class="fas fa-lock"></i> Пароль
+                        </label>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Введите ваш пароль" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Запомнить меня</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i> Войти
+                        </button>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p>Ещё не зарегистрированы? 
+                            <a asp-action="Register" asp-controller="Auth">Создайте аккаунт</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

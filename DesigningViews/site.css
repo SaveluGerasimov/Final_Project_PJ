@@ -1,0 +1,130 @@
+/* site.css */
+
+/* Основные стили */
+body {
+    padding-top: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Навигация */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Карточки */
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,.15);
+}
+
+.card-header {
+    border-bottom: 2px solid rgba(0,0,0,.125);
+}
+
+/* Статьи */
+.article-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+/* Комментарии */
+.media {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.media:last-child {
+    border-bottom: none;
+}
+
+/* Бейджи */
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.8em;
+}
+
+/* Формы */
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Кнопки */
+.btn {
+    font-weight: 500;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Подвал */
+.footer {
+    margin-top: 50px;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .jumbotron {
+        padding: 2rem 1rem;
+    }
+}
+
+/* Кастомные классы */
+.rounded-circle-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+}
+
+.text-truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Анимации */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

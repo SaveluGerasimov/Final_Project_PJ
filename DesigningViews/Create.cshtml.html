@@ -1,0 +1,89 @@
+@model BlogApp.DTOs.CreatePostDto
+
+@{
+    ViewData["Title"] = "Создание статьи";
+    var tags = ViewBag.Tags as List<BlogApp.Models.Tag>;
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-plus-circle"></i> @ViewData["Title"]
+                </h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label">
+                            <i class="fas fa-heading"></i> Заголовок
+                        </label>
+                        <input asp-for="Title" class="form-control" placeholder="Введите заголовок статьи" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label asp-for="Content" class="control-label">
+                            <i class="fas fa-file-alt"></i> Содержание
+                        </label>
+                        <textarea asp-for="Content" class="form-control" rows="15" 
+                                  placeholder="Напишите содержание вашей статьи"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label">
+                            <i class="fas fa-tags"></i> Теги
+                        </label>
+                        <div class="row">
+                            @if (tags != null)
+                            {
+                                for (int i = 0; i < tags.Count; i++)
+                                {
+                                    <div class="col-md-3 col-sm-4 col-6 mb-2">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" 
+                                                   id="tag_@tags[i].Id" name="TagIds" value="@tags[i].Id">
+                                            <label class="custom-control-label" for="tag_@tags[i].Id">
+                                                @tags[i].Name
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Опубликовать статью
+                        </button>
+                        <a href="@Url.Action("Index", "Posts")" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Отмена
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Инициализация редактора текста (можно подключить CKEditor или TinyMCE)
+        $(document).ready(function() {
+            // Простая валидация
+            $('form').submit(function() {
+                var content = $('#Content').val();
+                if (content.trim().length < 100) {
+                    alert('Содержание статьи должно быть не менее 100 символов');
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+}

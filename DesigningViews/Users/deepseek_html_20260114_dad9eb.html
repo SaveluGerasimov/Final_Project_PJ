@@ -1,0 +1,83 @@
+@model IEnumerable<BlogApp.Models.User>
+
+@{
+    ViewData["Title"] = "Пользователи";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>
+            <i class="fas fa-users text-primary"></i> @ViewData["Title"]
+        </h1>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <h5><i class="fas fa-info-circle"></i> Пользователи не найдены</h5>
+        <p>В системе пока нет зарегистрированных пользователей.</p>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var user in Model)
+        {
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 80px; height: 80px;">
+                            <i class="fas fa-user fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">@user.Username</h5>
+                        <p class="card-text text-muted">
+                            <small>
+                                <i class="fas fa-envelope"></i> @user.Email<br>
+                                <i class="fas fa-calendar"></i> Зарегистрирован: @user.CreatedAt.ToString("dd.MM.yyyy")
+                            </small>
+                        </p>
+                        
+                        <div class="mb-3">
+                            @if (user.UserRoles != null)
+                            {
+                                foreach (var userRole in user.UserRoles)
+                                {
+                                    <span class="badge 
+                                          @(userRole.Role.Name == "Admin" ? "badge-danger" :
+                                            userRole.Role.Name == "Moderator" ? "badge-warning" : "badge-secondary") mr-1">
+                                        @userRole.Role.Name
+                                    </span>
+                                }
+                            }
+                        </div>
+                        
+                        <div class="d-flex justify-content-center">
+                            <a href="@Url.Action("Details", "Users", new { id = user.Id })" 
+                               class="btn btn-outline-primary btn-sm mr-2" 
+                               data-toggle="tooltip" title="Просмотр профиля">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a href="@Url.Action("Edit", "Users", new { id = user.Id })" 
+                                   class="btn btn-outline-secondary btn-sm mr-2" 
+                                   data-toggle="tooltip" title="Редактировать">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                
+                                <a href="@Url.Action("Delete", "Users", new { id = user.Id })" 
+                                   class="btn btn-outline-danger btn-sm delete-confirm" 
+                                   data-toggle="tooltip" title="Удалить">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
